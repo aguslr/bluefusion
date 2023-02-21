@@ -1,7 +1,8 @@
 [BlueFusion][1]
 ===============
 
-A custom Fedora Silverblue image that adds RPM Fusion and media codecs.
+A Fedora Silverblue image that adds RPM Fusion with media codecs and replaces
+[Toolbox][2] with [Distrobox][3].
 
 ![Screenshot](https://github.com/aguslr/bluefusion/raw/main/screenshot.png "Screenshot")
 
@@ -23,11 +24,13 @@ Features
 Verification
 ------------
 
-These images are signed with Sisgstore's [Cosign][2]. You can verify the
+These images are signed with Sisgstore's [Cosign][4]. You can verify the
 signature by downloading the `cosign.pub` key from this repo and running the
 following command:
 
     cosign verify --key cosign.pub ghcr.io/aguslr/bluefusion
 
 [1]: https://github.com/aguslr/bluefusion
-[2]: https://docs.sigstore.dev/cosign/overview/
+[2]: https://github.com/containers/toolbox
+[3]: https://github.com/89luca89/distrobox
+[4]: https://docs.sigstore.dev/cosign/overview/
