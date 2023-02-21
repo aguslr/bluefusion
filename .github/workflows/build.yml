@@ -9,6 +9,7 @@ on:
     paths-ignore:
       - 'README*'
       - '*.md'
+      - '*.png'
       - '*.txt'
   push:
     branches:
@@ -16,6 +17,7 @@ on:
     paths-ignore:
       - 'README*'
       - '*.md'
+      - '*.png'
       - '*.txt'
   workflow_dispatch:
 
