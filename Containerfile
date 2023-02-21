@@ -2,6 +2,8 @@ ARG FEDORA_MAJOR_VERSION=37
 
 FROM ghcr.io/aguslr/bluevanilla:${FEDORA_MAJOR_VERSION}
 
+COPY etc/dconf/db/local.d/ /etc/dconf/db/local.d/
+
 RUN rpm-ostree install distrobox && \
     rpm-ostree override remove toolbox && \
     rpm-ostree install \
