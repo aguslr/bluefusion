@@ -3,6 +3,8 @@
 
 A custom Fedora Silverblue image that adds RPM Fusion and media codecs.
 
+![Screenshot](https://github.com/aguslr/bluefusion/raw/main/screenshot.png "Screenshot")
+
 Usage
 -----
 
