@@ -30,7 +30,19 @@ following command:
 
     cosign verify --key cosign.pub ghcr.io/aguslr/bluefusion
 
+References
+----------
+
+- [Building your own custom Fedora Silverblue image][5]
+- [Howto/OSTree - RPM Fusion][6]
+- [Cosign - Sigstore Documentation][4]
+- [Making your Own - Universal Blue][7]
+
+
 [1]: https://github.com/aguslr/bluefusion
 [2]: https://github.com/containers/toolbox
 [3]: https://github.com/89luca89/distrobox
 [4]: https://docs.sigstore.dev/cosign/overview/
+[5]: https://www.ypsidanger.com/building-your-own-fedora-silverblue-image/
+[6]: https://rpmfusion.org/Howto/OSTree
+[7]: https://ublue.it/making-your-own/
