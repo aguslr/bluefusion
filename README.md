@@ -18,4 +18,14 @@ Features
   + Open Terminal into the system's shell: `<Control><Alt>t`
   + Open Terminal into the default Distrobox container: `<Super>Return`
 
+Verification
+------------
+
+These images are signed with Sisgstore's [Cosign][2]. You can verify the
+signature by downloading the `cosign.pub` key from this repo and running the
+following command:
+
+    cosign verify --key cosign.pub ghcr.io/aguslr/bluefusion
+
 [1]: https://github.com/aguslr/bluefusion
+[2]: https://docs.sigstore.dev/cosign/overview/
