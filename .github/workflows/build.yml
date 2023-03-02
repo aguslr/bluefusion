@@ -159,22 +159,14 @@ jobs:
             --disable-content-trust
 
       # Sign container
-      - uses: sigstore/cosign-installer@main
-
-      # Only needed when running `cosign sign` using a key
-      - name: Write signing key to disk
-        run: |
-          echo "${{ env.COSIGN_PRIVATE_KEY }}" > cosign.key
-          # DEBUG: get character count of key
-          wc -c cosign.key
-        env:
-          COSIGN_PRIVATE_KEY: ${{ secrets.COSIGN_KEY }}
+      - uses: sigstore/cosign-installer@v2
 
       - name: Sign container image
         run: |
-          cosign sign --key cosign.key ghcr.io/${{ env.GITHUB_USERNAME }}/${{ env.IMAGE_NAME }}@${TAGS}
+          cosign sign --key env://COSIGN_PRIVATE_KEY ghcr.io/${{ env.GITHUB_USERNAME }}/${{ env.IMAGE_NAME }}@${TAGS}
         env:
           TAGS: ${{ steps.push.outputs.digest }}
+          COSIGN_PRIVATE_KEY: ${{ secrets.COSIGN_KEY }}
           COSIGN_EXPERIMENTAL: false
 
       - name: Echo outputs
