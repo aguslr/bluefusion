@@ -6,7 +6,11 @@
 A Fedora Silverblue image that adds RPM Fusion with media codecs and replaces
 [Toolbox][2] with [Distrobox][3].
 
-![Screenshot](https://github.com/aguslr/bluefusion/raw/main/screenshot.png "Screenshot")
+<picture>
+  <source media="(prefers-color-scheme: light)" srcset="https://github.com/aguslr/bluefusion/raw/main/screenshot-light.png">
+  <source media="(prefers-color-scheme: dark)"  srcset="https://github.com/aguslr/bluefusion/raw/main/screenshot-dark.png">
+  <img title="Screenshot" alt="Screenshot" src="https://github.com/aguslr/bluefusion/raw/main/screenshot-light.png">
+</picture>
 
 Usage
 -----
