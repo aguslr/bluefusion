@@ -18,5 +18,7 @@ RUN rpm-ostree install distrobox && \
     rpm-ostree install ffmpeg gstreamer1-plugin-libav gstreamer1-plugins-bad-free-extras gstreamer1-plugins-bad-freeworld gstreamer1-plugins-ugly gstreamer1-vaapi steam-devices && \
     mkdir -p /etc/distrobox && \
     echo "container_image_default=\"registry.fedoraproject.org/fedora-toolbox:$(rpm -E %fedora)\"" >> /etc/distrobox/distrobox.conf && \
+    sed -i 's/#AutomaticUpdatePolicy.*/AutomaticUpdatePolicy=check/' /etc/rpm-ostreed.conf && \
+    systemctl enable rpm-ostreed-automatic.timer && \
     rpm-ostree cleanup -m && \
     ostree container commit
