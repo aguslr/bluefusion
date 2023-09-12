@@ -149,7 +149,7 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
           build-args: |
             FEDORA_MAJOR_VERSION=${{ matrix.major_version }}
-          oci: true
+          oci: false
 
       - name: Push to container registries
         uses: redhat-actions/push-to-registry@v2
