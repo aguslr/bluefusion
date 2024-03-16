@@ -139,7 +139,7 @@ jobs:
         uses: redhat-actions/buildah-build@v2
         with:
           containerfiles: |
-            ./Containerfile.${{ matrix.major_version }}
+            ./Containerfile
           tags: |
             ${{ steps.meta.outputs.tags }}
             ${{ steps.meta_pr.outputs.tags }}
