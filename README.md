@@ -20,7 +20,7 @@ Usage
 Features
 --------
 
-- Start with a base Fedora Silverblue image.
+- Start with a custom Fedora Silverblue image.
 - Replace `toolbox` with `distrobox`.
 - Add RPM Fusion repositories and several multimedia packages.
 - Set automatic checking of updates for the system.
