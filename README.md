@@ -23,6 +23,15 @@ Usage
 
        rpm-ostree rebase ostree-image-signed:docker://ghcr.io/aguslr/bluefusion:latest && systemctl reboot
 
+Alternatively, an [ISO file for offline installation][8] can be generated with
+the following command:
+
+    sudo podman run --rm --privileged --volume .:/isogenerator/output \
+        --security-opt label=disable --pull=newer \
+        -e IMAGE_REPO="ghcr.iso/aguslr" -e IMAGE_NAME="bluefusion" \
+        -e IMAGE_TAG="latest" -e VARIANT="Silverblue" \
+        ghcr.io/ublue-os/isogenerator:39
+
 Features
 --------
 
@@ -59,3 +68,4 @@ References
 [5]: https://www.ypsidanger.com/building-your-own-fedora-silverblue-image/
 [6]: https://rpmfusion.org/Howto/OSTree
 [7]: https://ublue.it/making-your-own/
+[8]: https://blue-build.org/learn/universal-blue/#fresh-install-from-an-iso
