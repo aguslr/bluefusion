@@ -4,9 +4,7 @@ FROM ghcr.io/aguslr/bluevanilla:${FEDORA_MAJOR_VERSION}
 
 COPY rootfs/ /
 
-RUN mkdir -p /etc/distrobox && \
-    printf 'container_image_default="registry.fedoraproject.org/fedora-toolbox:%s"\n' "$(rpm -E %fedora)" > /etc/distrobox/distrobox.conf && \
-    rpm-ostree override remove toolbox --install distrobox && \
+RUN rpm-ostree override remove toolbox --install distrobox && \
     rpm-ostree install \
     https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm \
     https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm && \
