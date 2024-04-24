@@ -41,11 +41,11 @@ jobs:
             is_latest: false
             is_stable: false
           - major_version: 39
-            is_latest: true
-            is_stable: true
-          - major_version: 40
             is_latest: false
             is_stable: false
+          - major_version: 40
+            is_latest: true
+            is_stable: true
 
     steps:
 
