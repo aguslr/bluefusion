@@ -67,70 +67,12 @@ jobs:
           tags: |
             type=semver,pattern={{version}}
             type=sha,prefix=sha256-
-
-      - name: Extract Docker PR tag
-        if: github.event_name == 'pull_request'
-        id: meta_pr
-        uses: docker/metadata-action@v5
-        with:
-          images: |
-            ${{ env.REGISTRY_URL }}/${{ env.REGISTRY_USERNAME }}/${{ env.IMAGE_NAME }}
-          flavor: |
-            latest=false
-          tags: |
-            type=ref,suffix=-${{ matrix.major_version }},event=pr
-
-      - name: Extract Docker date tag
-        if: github.event_name == 'schedule'
-        id: meta_date
-        uses: docker/metadata-action@v5
-        with:
-          images: |
-            ${{ env.REGISTRY_URL }}/${{ env.REGISTRY_USERNAME }}/${{ env.IMAGE_NAME }}
-          flavor: |
-            latest=false
-          tags: |
-            type=schedule,prefix=${{ matrix.major_version }}-,pattern={{date 'YYYYMMDD'}}
-
-      - name: Extract Docker major version tag
-        if: |
-          github.event_name != 'pull_request' && matrix.major_version != ''
-        id: meta_version
-        uses: docker/metadata-action@v5
-        with:
-          images: |
-            ${{ env.REGISTRY_URL }}/${{ env.REGISTRY_USERNAME }}/${{ env.IMAGE_NAME }}
-          flavor: |
-            latest=false
-          tags: |
-            type=raw,value=${{ matrix.major_version }}
-
-      - name: Extract Docker stable tag
-        if: |
-          github.event_name != 'pull_request' && matrix.is_stable == true
-        id: meta_stable
-        uses: docker/metadata-action@v5
-        with:
-          images: |
-            ${{ env.REGISTRY_URL }}/${{ env.REGISTRY_USERNAME }}/${{ env.IMAGE_NAME }}
-          flavor: |
-            latest=false
-          tags: |
-            type=schedule,pattern={{date 'YYYYMMDD'}}
-            type=raw,value=stable
-
-      - name: Extract Docker latest tag
-        if: |
-          github.event_name != 'pull_request' && matrix.is_latest == true
-        id: meta_latest
-        uses: docker/metadata-action@v5
-        with:
-          images: |
-            ${{ env.REGISTRY_URL }}/${{ env.REGISTRY_USERNAME }}/${{ env.IMAGE_NAME }}
-          flavor: |
-            latest=false
-          tags: |
-            type=raw,value=latest
+            type=raw,value=${{ matrix.major_version }},enable=${{ github.event_name != 'pull_request' && matrix.major_version != '' }}
+            type=raw,value=latest,enable=${{ github.event_name != 'pull_request' && matrix.is_latest == true }}
+            type=raw,value=stable,enable=${{ github.event_name != 'pull_request' && matrix.is_stable == true }}
+            type=ref,suffix=-${{ matrix.major_version }},event=pr,enable=${{ github.event_name == 'pull_request' }}
+            type=schedule,pattern={{date 'YYYYMMDD'}},enable=${{ github.event_name != 'pull_request' && matrix.is_stable == true }}
+            type=schedule,prefix=${{ matrix.major_version }}-,pattern={{date 'YYYYMMDD'}},enable=${{ github.event_name == 'schedule' }}
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
@@ -152,13 +94,7 @@ jobs:
           platforms: linux/amd64,linux/arm64
           provenance: false
           push: true
-          tags: |
-            ${{ steps.meta.outputs.tags }}
-            ${{ steps.meta_pr.outputs.tags }}
-            ${{ steps.meta_date.outputs.tags }}
-            ${{ steps.meta_version.outputs.tags }}
-            ${{ steps.meta_stable.outputs.tags }}
-            ${{ steps.meta_latest.outputs.tags }}
+          tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
 
       - name: Install Cosign
