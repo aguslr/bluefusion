@@ -32,6 +32,7 @@ RUN <<-'EOT' bash
 		--install=mesa-vdpau-drivers-freeworld \
 		--install=gstreamer1-plugin-libav \
 		--install=gstreamer1-plugins-bad-free-extras \
+		--install=gstreamer1-plugins-bad-freeworld \
 		--install=gstreamer1-plugins-ugly \
 		--install=gstreamer1-vaapi
 
