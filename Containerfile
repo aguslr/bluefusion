@@ -40,6 +40,7 @@ RUN <<-'EOT' bash
 		rpm-ostree install steam-devices
 		rpm-ostree install intel-media-driver libva-intel-driver
 	fi
+	rpm-ostree install libva-nvidia-driver
 
 	rpm-ostree cleanup -m && ostree container commit
 EOT
