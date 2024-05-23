@@ -107,4 +107,4 @@ jobs:
 
       - name: Echo outputs
         run: |
-          echo "${{ toJSON(steps.push.outputs) }}"
+          echo "${{ toJSON(steps.build-and-push.outputs) }}"
