@@ -35,8 +35,10 @@ RUN <<-'EOT' bash
 		--install=gstreamer1-plugins-ugly \
 		--install=gstreamer1-vaapi
 
-	rpm-ostree install steam-devices
-	rpm-ostree install intel-media-driver libva-intel-driver
+	if [ "$(rpm -E %{_arch})" = 'x86_64' ]; then
+		rpm-ostree install steam-devices
+		rpm-ostree install intel-media-driver libva-intel-driver
+	fi
 
 	rpm-ostree cleanup -m && ostree container commit
 EOT
