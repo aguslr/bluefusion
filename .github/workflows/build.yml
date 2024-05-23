@@ -67,6 +67,8 @@ jobs:
             ${{ env.REGISTRY_URL }}/${{ env.REGISTRY_USERNAME }}/${{ env.IMAGE_NAME }}
           flavor: |
             latest=false
+          labels: |
+            org.opencontainers.image.description=${{ github.event.repository.description }}
           tags: |
             type=semver,pattern={{version}}
             type=sha,prefix=sha256-
