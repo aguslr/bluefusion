@@ -49,6 +49,9 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Get Git commit timestamps
+        run: echo "TIMESTAMP=$(git log -1 --pretty=%ct)" >> $GITHUB_ENV
+
       - name: Log into registry
         uses: docker/login-action@v3
         with:
@@ -83,6 +86,7 @@ jobs:
         uses: docker/build-push-action@v5
         env:
           ACTIONS_RUNTIME_TOKEN: ''
+          SOURCE_DATE_EPOCH: ${{ env.TIMESTAMP }}
         with:
           file: |
             ./Containerfile
