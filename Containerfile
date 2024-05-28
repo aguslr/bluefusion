@@ -1,11 +1,31 @@
 ARG FEDORA_MAJOR_VERSION=40
 
+FROM quay.io/fedora/fedora:${FEDORA_MAJOR_VERSION} AS builder
+
+WORKDIR /tmp
+RUN <<-EOT sh
+	set -u
+
+	dnf install -y git --setopt=install_weak_deps=False
+
+	touch /.dockerenv
+	mkdir -p /var/home /var/roothome
+
+	curl -fLs https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh -O && \
+		chmod a+x ./install.sh && ./install.sh && \
+		/home/linuxbrew/.linuxbrew/bin/brew update
+EOT
+
 FROM ghcr.io/aguslr/bluevanilla:${FEDORA_MAJOR_VERSION}
 
+COPY --from=builder --chown=1000:1000 /home/linuxbrew /usr/share/homebrew
 COPY rootfs/ /
 
 RUN <<-'EOT' sh
 	set -eu
+
+	systemctl enable homebrew-cleanup.service
+	systemctl enable var-home-linuxbrew.mount
 
 	rpm-ostree override remove toolbox --install distrobox
 

@@ -39,6 +39,7 @@ Features
 --------
 
 - Start with a custom Fedora Silverblue image.
+- Install [HomeBrew][9].
 - Replace `toolbox` with `distrobox`.
 - Add RPM Fusion repositories and several multimedia packages.
 - Set automatic checking of updates for the system.
@@ -62,13 +63,20 @@ References
 - [Howto/OSTree - RPM Fusion][6]
 - [Cosign - Sigstore Documentation][4]
 - [Making your Own - Universal Blue][7]
+- [feat: homebrew on image by m2Giles · Pull Request #1128 · ublue-os/bazzite ·
+  GitHub][10]
+- [Homebrew's path setting conflict with host binaries · Issue #687 ·
+  ublue-os/bluefin · GitHub][11]
 
 
-[1]: https://github.com/aguslr/bluefusion
-[2]: https://github.com/containers/toolbox
-[3]: https://github.com/89luca89/distrobox
-[4]: https://docs.sigstore.dev/cosign/overview/
-[5]: https://www.ypsidanger.com/building-your-own-fedora-silverblue-image/
-[6]: https://rpmfusion.org/Howto/OSTree
-[7]: https://ublue.it/making-your-own/
-[8]: https://blue-build.org/learn/universal-blue/#fresh-install-from-an-iso
+[1]:  https://github.com/aguslr/bluefusion
+[2]:  https://github.com/containers/toolbox
+[3]:  https://github.com/89luca89/distrobox
+[4]:  https://docs.sigstore.dev/cosign/overview/
+[5]:  https://www.ypsidanger.com/building-your-own-fedora-silverblue-image/
+[6]:  https://rpmfusion.org/Howto/OSTree
+[7]:  https://ublue.it/making-your-own/
+[8]:  https://blue-build.org/learn/universal-blue/#fresh-install-from-an-iso
+[9]:  https://brew.sh/
+[10]: https://github.com/ublue-os/bazzite/pull/1128/commits/2dbf297
+[11]: https://github.com/ublue-os/bluefin/issues/687

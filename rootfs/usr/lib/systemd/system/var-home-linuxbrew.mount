@@ -1,0 +1,17 @@
+[Unit]
+Description=Homebrew overlay mount
+Wants=homebrew-cleanup.service
+After=homebrew-cleanup.service
+After=var.mount
+ConditionPathIsDirectory=%S/homebrew
+ConditionPathIsDirectory=%C/homebrew
+ConditionPathExists=!/var/home/linuxbrew/.linuxbrew
+
+[Mount]
+Type=overlay
+What=overlay
+Options=noauto,nofail,lowerdir=/usr/share/homebrew,upperdir=%S/homebrew,workdir=%C/homebrew
+Where=/var/home/linuxbrew
+
+[Install]
+WantedBy=local-fs.target
