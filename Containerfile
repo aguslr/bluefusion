@@ -4,7 +4,7 @@ FROM ghcr.io/aguslr/bluevanilla:${FEDORA_MAJOR_VERSION}
 
 COPY rootfs/ /
 
-RUN <<-'EOT' bash
+RUN <<-'EOT' sh
 	set -eu
 
 	rpm-ostree override remove toolbox --install distrobox
