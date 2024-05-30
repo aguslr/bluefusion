@@ -39,7 +39,7 @@ Features
 --------
 
 - Start with a custom Fedora Silverblue image.
-- Install [HomeBrew][9].
+- Install [HomeBrew][9] on `x86_64`.
 - Replace `toolbox` with `distrobox`.
 - Add RPM Fusion repositories and several multimedia packages.
 - Set automatic checking of updates for the system.

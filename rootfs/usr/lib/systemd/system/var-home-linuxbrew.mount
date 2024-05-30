@@ -5,6 +5,7 @@ After=homebrew-cleanup.service
 After=var.mount
 ConditionPathIsDirectory=%S/homebrew
 ConditionPathIsDirectory=%C/homebrew
+ConditionPathExists=/usr/share/homebrew/.linuxbrew
 ConditionPathExists=!/var/home/linuxbrew/.linuxbrew
 
 [Mount]

@@ -6,14 +6,17 @@ WORKDIR /tmp
 RUN <<-EOT sh
 	set -u
 
-	dnf install -y git --setopt=install_weak_deps=False
-
 	touch /.dockerenv
 	mkdir -p /var/home /var/roothome
 
-	curl -fLs https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh -O && \
-		chmod a+x ./install.sh && ./install.sh && \
-		/home/linuxbrew/.linuxbrew/bin/brew update
+	if [ "$(rpm -E %{_arch})" = 'x86_64' ]; then
+		dnf install -y git --setopt=install_weak_deps=False
+		curl -fLs https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh -O && \
+			chmod a+x ./install.sh && ./install.sh && \
+			/home/linuxbrew/.linuxbrew/bin/brew update
+	else
+		mkdir /home/linuxbrew
+	fi
 EOT
 
 FROM ghcr.io/aguslr/bluevanilla:${FEDORA_MAJOR_VERSION}
