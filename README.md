@@ -3,8 +3,8 @@
 
 [![build-image](https://github.com/aguslr/bluefusion/actions/workflows/build.yml/badge.svg)](https://github.com/aguslr/bluefusion/actions/workflows/build.yml)
 
-A Fedora Silverblue image that adds RPM Fusion with media codecs and replaces
-[Toolbox][2] with [Distrobox][3].
+A Fedora Silverblue image that adds RPM Fusion with media codecs and integrates
+[Homebrew][9] besides replacing [Toolbox][2] with [Distrobox][3].
 
 <picture>
   <source media="(prefers-color-scheme: light)" srcset="screenshot-light.png">
