@@ -12,4 +12,16 @@ if systemctl --quiet is-active var-home-linuxbrew.mount; then
 			fi
 			;;
 	esac
+
+	# Disable manual `brew update`
+	brew() {
+		case "$1" in
+			update)
+				printf 'Homebrew manual updates are disabled\n' >&2
+				;;
+			*)
+				command brew "$@"
+				;;
+		esac
+	}
 fi
