@@ -34,6 +34,7 @@ RUN <<-'EOT' sh
 
 	systemctl enable homebrew-cleanup.service
 	systemctl enable var-home-linuxbrew.mount
+	rpm-ostree install gcc make
 
 	rpm-ostree override remove toolbox --install distrobox
 
