@@ -14,6 +14,11 @@ RUN <<-EOT sh
 		curl -fLs https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh -O && \
 			chmod a+x ./install.sh && ./install.sh && \
 			/home/linuxbrew/.linuxbrew/bin/brew update
+
+		/home/linuxbrew/.linuxbrew/bin/brew install p11-kit && \
+			/home/linuxbrew/.linuxbrew/bin/brew unlink p11-kit
+		/home/linuxbrew/.linuxbrew/bin/brew install --no-binaries util-linux && \
+			/home/linuxbrew/.linuxbrew/bin/brew unlink util-linux
 	else
 		mkdir /home/linuxbrew
 	fi
