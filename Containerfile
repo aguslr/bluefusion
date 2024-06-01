@@ -28,7 +28,6 @@ COPY rootfs/ /
 RUN <<-'EOT' sh
 	set -eu
 
-	systemctl enable homebrew-cleanup.service
 	systemctl enable var-home-linuxbrew.mount
 	rpm-ostree install gcc make
 
