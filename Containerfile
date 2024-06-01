@@ -11,8 +11,9 @@ RUN <<-EOT sh
 
 	if [ "$(rpm -E %{_arch})" = 'x86_64' ]; then
 		dnf install -y git --setopt=install_weak_deps=False
-		curl -fLs https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh -O && \
-			chmod a+x ./install.sh && ./install.sh && \
+		curl -o brew_install -fLs \
+			https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh && \
+			chmod a+x ./brew_install && ./brew_install && \
 			/home/linuxbrew/.linuxbrew/bin/brew update
 	else
 		mkdir /home/linuxbrew
