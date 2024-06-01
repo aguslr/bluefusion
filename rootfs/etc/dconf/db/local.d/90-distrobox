@@ -1,0 +1,7 @@
+[org/gnome/desktop/app-folders]
+folder-children=['Utilities', 'YaST', 'Distrobox']
+
+[org/gnome/desktop/app-folders/folders/Distrobox]
+categories=['Distrobox']
+name='Distrobox'
+translate=false
