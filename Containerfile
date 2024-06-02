@@ -8,6 +8,7 @@ RUN <<-EOT sh
 
 	touch /.dockerenv
 
+	# Instal Homebrew
 	case "$(rpm -E %{_arch})" in
 		x86_64)
 			dnf install -y git --setopt=install_weak_deps=False
@@ -19,19 +20,30 @@ RUN <<-EOT sh
 			mkdir /home/linuxbrew
 			;;
 	esac
+
+	# Install Nix
+	dnf install -y xz --setopt=install_weak_deps=False
+	useradd -G wheel test && mkdir -m 0755 /nix && chown test /nix
+	sudo -u test -- bash -c \
+		'curl -fLs https://nixos.org/nix/install | sh -s -- --no-daemon --yes'
+	cp -pr \
+		/home/test/.local/state/nix/profiles/profile-1-link \
+		/nix/var/nix/profiles/default
 EOT
 
 FROM ghcr.io/aguslr/bluevanilla:${FEDORA_MAJOR_VERSION}
 
 COPY --from=builder --chown=1000:1000 /home/linuxbrew /usr/share/homebrew
+COPY --from=builder --chown=1000:1000 /nix /usr/share/nix
 COPY rootfs/ /
 
 RUN <<-'EOT' sh
 	set -eu
 
+	systemctl enable nix.mount
 	systemctl enable var-home-linuxbrew.mount
-	rpm-ostree install gcc make
 
+	rpm-ostree install gcc make
 	rpm-ostree override remove toolbox --install distrobox
 
 	rpm-ostree install \

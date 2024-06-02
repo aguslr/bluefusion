@@ -4,7 +4,7 @@
 [![build-image](https://github.com/aguslr/bluefusion/actions/workflows/build.yml/badge.svg)](https://github.com/aguslr/bluefusion/actions/workflows/build.yml)
 
 A Fedora Silverblue image that adds RPM Fusion with media codecs and integrates
-[Homebrew][9].
+both [Homebrew][9] and [Nix][12].
 
 <picture>
   <source media="(prefers-color-scheme: light)" srcset="screenshot-light.png">
@@ -40,6 +40,7 @@ Features
 
 - Start with a custom Fedora Silverblue image.
 - Install [Homebrew][9] on `x86_64`.
+- Install [Nix][12].
 - Replace [Toolbox][2] with [Distrobox][3].
 - Add RPM Fusion repositories and several multimedia packages.
 - Set automatic checking of updates for the system.
@@ -67,6 +68,8 @@ References
   GitHub][10]
 - [Homebrew's path setting conflict with host binaries · Issue #687 ·
   ublue-os/bluefin · GitHub][11]
+- [Nix package manager install (single user) on Fedora Silverblue][13]
+- [Nix on Fedora][14]
 
 
 [1]:  https://github.com/aguslr/bluefusion
@@ -80,3 +83,6 @@ References
 [9]:  https://brew.sh/
 [10]: https://github.com/ublue-os/bazzite/pull/1128/commits/2dbf297
 [11]: https://github.com/ublue-os/bluefin/issues/687
+[12]: https://nixos.org/download/
+[13]: https://gist.github.com/queeup/1666bc0a5558464817494037d612f094
+[14]: https://gist.github.com/matthewpi/08c3d652e7879e4c4c30bead7021ff73
