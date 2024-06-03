@@ -8,14 +8,17 @@ RUN <<-EOT sh
 
 	touch /.dockerenv
 
-	if [ "$(rpm -E %{_arch})" = 'x86_64' ]; then
-		dnf install -y git --setopt=install_weak_deps=False
-		curl -fLs \
-			https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh | bash -s
-		/home/linuxbrew/.linuxbrew/bin/brew update
-	else
-		mkdir /home/linuxbrew
-	fi
+	case "$(rpm -E %{_arch})" in
+		x86_64)
+			dnf install -y git --setopt=install_weak_deps=False
+			curl -fLs \
+				https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh | bash -s
+			/home/linuxbrew/.linuxbrew/bin/brew update
+			;;
+		*)
+			mkdir /home/linuxbrew
+			;;
+	esac
 EOT
 
 FROM ghcr.io/aguslr/bluevanilla:${FEDORA_MAJOR_VERSION}
