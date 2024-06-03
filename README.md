@@ -4,7 +4,7 @@
 [![build-image](https://github.com/aguslr/bluefusion/actions/workflows/build.yml/badge.svg)](https://github.com/aguslr/bluefusion/actions/workflows/build.yml)
 
 A Fedora Silverblue image that adds RPM Fusion with media codecs and integrates
-[Homebrew][9] besides replacing [Toolbox][2] with [Distrobox][3].
+[Homebrew][9].
 
 <picture>
   <source media="(prefers-color-scheme: light)" srcset="screenshot-light.png">
@@ -39,8 +39,8 @@ Features
 --------
 
 - Start with a custom Fedora Silverblue image.
-- Install [HomeBrew][9] on `x86_64`.
-- Replace `toolbox` with `distrobox`.
+- Install [Homebrew][9] on `x86_64`.
+- Replace [Toolbox][2] with [Distrobox][3].
 - Add RPM Fusion repositories and several multimedia packages.
 - Set automatic checking of updates for the system.
 - Add keyboard shortcuts:
