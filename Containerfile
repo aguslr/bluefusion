@@ -7,7 +7,6 @@ RUN <<-EOT sh
 	set -u
 
 	touch /.dockerenv
-	mkdir -p /var/home /var/roothome
 
 	if [ "$(rpm -E %{_arch})" = 'x86_64' ]; then
 		dnf install -y git --setopt=install_weak_deps=False
