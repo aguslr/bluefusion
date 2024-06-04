@@ -56,6 +56,7 @@ RUN <<-'EOT' sh
 	rpm-ostree override remove \
 		mesa-va-drivers \
 		ffmpeg-free \
+		gstreamer1-plugins-bad-free \
 		libavcodec-free \
 		libavdevice-free \
 		libavfilter-free \
