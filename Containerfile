@@ -38,7 +38,7 @@ COPY --from=builder --chown=1000:1000 /nix /usr/share/nix
 COPY rootfs/ /
 
 RUN <<-'EOT' sh
-	set -eu
+	set -u
 
 	systemctl enable nix.mount
 	systemctl enable var-home-linuxbrew.mount
@@ -54,7 +54,6 @@ RUN <<-'EOT' sh
 		--uninstall rpmfusion-nonfree-release
 
 	rpm-ostree override remove \
-		mesa-va-drivers \
 		ffmpeg-free \
 		libavcodec-free \
 		libavdevice-free \
@@ -65,13 +64,16 @@ RUN <<-'EOT' sh
 		libswresample-free \
 		libswscale-free \
 		--install=ffmpeg \
-		--install=mesa-va-drivers-freeworld \
-		--install=mesa-vdpau-drivers-freeworld \
 		--install=gstreamer1-plugin-libav \
 		--install=gstreamer1-plugins-bad-free-extras \
 		--install=gstreamer1-plugins-bad-freeworld \
 		--install=gstreamer1-plugins-ugly \
 		--install=gstreamer1-vaapi
+
+	rpm-ostree override remove \
+		mesa-va-drivers \
+		--install=mesa-va-drivers-freeworld \
+		--install=mesa-vdpau-drivers-freeworld
 
 	if [ "$(rpm -E %{_arch})" = 'x86_64' ]; then
 		rpm-ostree install steam-devices
