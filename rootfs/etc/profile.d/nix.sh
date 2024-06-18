@@ -1,7 +1,7 @@
 if systemctl --quiet is-active nix.mount; then
 
 	# Source global configuration
-	PATH="/nix/var/nix/profiles/default/bin:${PATH}"
+	PATH="/nix/var/nix/profiles/default/bin${PATH+:$PATH}"
 	. /nix/var/nix/profiles/default/etc/profile.d/nix.sh 2>/dev/null
 
 	# Set default channels
