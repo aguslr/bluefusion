@@ -31,7 +31,7 @@ RUN <<-EOT sh
 		/nix/var/nix/profiles/default
 EOT
 
-FROM ghcr.io/aguslr/bluevanilla:${FEDORA_MAJOR_VERSION}
+FROM quay.io/fedora/fedora-silverblue:${FEDORA_MAJOR_VERSION}
 
 COPY --from=builder --chown=1000:1000 /home/linuxbrew /usr/share/homebrew
 COPY --from=builder --chown=1000:1000 /nix /usr/share/nix
@@ -40,10 +40,41 @@ COPY rootfs/ /
 RUN <<-'EOT' sh
 	set -u
 
+	# From BlueVanilla
+	systemctl enable dconf-update.service
+	systemctl enable flatpak-add-flathub-repo.service
+	systemctl enable flatpak-replace-fedora-apps.service
+	systemctl enable flatpak-cleanup.timer
+	systemctl enable rpm-ostreed-automatic.timer
+
+	bg_file=$(find /usr/share/backgrounds/gnome/ -name 'adwaita-*.*' -print -quit) && \
+		sed -i 's|\.ext|.'"${bg_file##*.}"'|' /etc/dconf/db/local.d/01-background
+
+	case "$(rpm -E %fedora)" in
+		40)
+			rpm-ostree override remove \
+				gnome-classic-session \
+				gnome-classic-session-xsession
+			;;
+		*)
+			rpm-ostree override remove \
+				gnome-classic-session
+			;;
+	esac
+
+	rpm-ostree install gcc gnome-backgrounds-extras gnome-tweaks
+	rpm-ostree override remove \
+		gnome-shell-extension-apps-menu \
+		gnome-shell-extension-launch-new-instance \
+		gnome-shell-extension-places-menu \
+		gnome-shell-extension-window-list \
+		gnome-shell-extension-background-logo
+
+	# From BlueFusion
 	systemctl enable nix.mount
 	systemctl enable var-home-linuxbrew.mount
 
-	rpm-ostree install gcc make
+	rpm-ostree install make
 	rpm-ostree override remove toolbox --install distrobox
 
 	rpm-ostree install \

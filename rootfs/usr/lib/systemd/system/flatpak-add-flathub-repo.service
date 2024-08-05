@@ -1,0 +1,18 @@
+[Unit]
+Description=Add Flathub flatpak repository
+ConditionPathExists=!/var/lib/flatpak/.flathub-repo-initialized
+After=network-online.target
+Before=flatpak-replace-fedora-apps.service
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStartPre=-/usr/bin/flatpak --system remote-delete --force flathub
+ExecStartPre=-/usr/bin/flatpak --system remote-delete --force flathub-beta
+ExecStart=/usr/bin/flatpak remote-add --system --if-not-exists --title "Flathub" flathub https://flathub.org/repo/flathub.flatpakrepo
+ExecStart=/usr/bin/flatpak remote-add --system --if-not-exists --disable --title "Flathub Beta" flathub-beta https://flathub.org/beta-repo/flathub-beta.flatpakrepo
+ExecStartPost=/usr/bin/touch /var/lib/flatpak/.flathub-repo-initialized
+
+[Install]
+WantedBy=multi-user.target

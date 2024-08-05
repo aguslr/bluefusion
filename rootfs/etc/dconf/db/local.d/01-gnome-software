@@ -1,0 +1,2 @@
+[org/gnome/software]
+packaging-format-preference=['flatpak:flathub-beta', 'flatpak:flathub', 'rpm']

@@ -1,0 +1,10 @@
+[Unit]
+Description=Trigger to remove unused flatpaks
+Documentation=man:flatpak-uninstall(1)
+
+[Timer]
+OnBootSec=15m
+OnUnitActiveSec=12h
+
+[Install]
+WantedBy=timers.target
