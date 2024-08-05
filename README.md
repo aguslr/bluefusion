@@ -38,12 +38,23 @@ the following command:
 Features
 --------
 
-- Start with a custom Fedora Silverblue image.
+From [BlueVanilla][15]:
+
+- Start with a base Fedora Silverblue image.
+- Add the `gnome-tweaks` package.
+- Restore GNOME's default background.
+- Replace Fedora repository with unfiltered Flathub repository.
+- Replace Fedora's Flatpaks with the ones from Flathub.
+- Remove unused Flatpak dependencies automatically.
+- Set automatic checking of updates for the system.
+- Reduce *systemd* shutdown timers.
+
+Additional features:
+
 - Install [Homebrew][9] on `x86_64`.
 - Install [Nix][12].
 - Replace [Toolbox][2] with [Distrobox][3].
 - Add RPM Fusion repositories and several multimedia packages.
-- Set automatic checking of updates for the system.
 - Add keyboard shortcuts:
   + Open Terminal into the system's shell: `<Control><Alt>t`
   + Open Terminal into the default Distrobox container: `<Super>Return`
@@ -91,3 +102,4 @@ References
 [12]: https://nixos.org/download/
 [13]: https://gist.github.com/queeup/1666bc0a5558464817494037d612f094
 [14]: https://gist.github.com/matthewpi/08c3d652e7879e4c4c30bead7021ff73
+[15]: https://github.com/aguslr/bluevanilla

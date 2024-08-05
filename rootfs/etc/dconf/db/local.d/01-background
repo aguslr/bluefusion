@@ -1,0 +1,6 @@
+[org/gnome/desktop/background]
+picture-uri='file:///usr/share/backgrounds/gnome/adwaita-l.ext'
+picture-uri-dark='file:///usr/share/backgrounds/gnome/adwaita-d.ext'
+picture-options='zoom'
+primary-color='3071AE'
+secondary-color='000000'

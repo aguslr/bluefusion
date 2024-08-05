@@ -1,0 +1,3 @@
+docker:
+  ghcr.io/aguslr:
+    use-sigstore-attachments: true
