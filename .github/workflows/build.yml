@@ -108,17 +108,6 @@ jobs:
           if-no-files-found: error
           retention-days: 1
 
-      - name: Install Cosign
-        uses: sigstore/cosign-installer@v3.1.2
-
-      - name: Sign container image
-        run: |
-          cosign sign -y --key env://COSIGN_PRIVATE_KEY ${{ env.REGISTRY_URL }}/${{ env.REGISTRY_USERNAME }}/${{ env.IMAGE_NAME }}@${TAGS}
-        env:
-          TAGS: ${{ steps.build-and-push.outputs.digest }}
-          COSIGN_PRIVATE_KEY: ${{ secrets.COSIGN_KEY }}
-          COSIGN_EXPERIMENTAL: false
-
       - name: Echo outputs
         run: |
           echo "${{ toJSON(steps.build-and-push.outputs) }}"
@@ -184,3 +173,14 @@ jobs:
       - name: Inspect image
         run: |
           docker buildx imagetools inspect ${{ env.REGISTRY_URL }}/${{ env.REGISTRY_USERNAME }}/${{ env.IMAGE_NAME }}:${{ steps.meta.outputs.version }}
+
+      - name: Install Cosign
+        uses: sigstore/cosign-installer@v3.1.2
+
+      - name: Sign container image
+        run: |
+          cosign sign -y --key env://COSIGN_PRIVATE_KEY ${TAGS}
+        env:
+          TAGS: ${{ steps.meta.outputs.tags }}
+          COSIGN_PRIVATE_KEY: ${{ secrets.COSIGN_KEY }}
+          COSIGN_EXPERIMENTAL: false
