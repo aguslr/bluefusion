@@ -36,15 +36,15 @@ jobs:
       fail-fast: false
       matrix:
         major_version: [39, 40]
-        include:
-          - major_version: 39
-            is_latest: false
-            is_stable: false
-          - major_version: 40
-            is_latest: true
-            is_stable: true
+        platform:
+          - linux/amd64
+          - linux/arm64
 
     steps:
+      - name: Prepare
+        run: |
+          platform=${{ matrix.platform }}
+          echo "PLATFORM_PAIR=${{ matrix.major_version }}_${platform//\//-}" >> $GITHUB_ENV
 
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -65,19 +65,10 @@ jobs:
         with:
           images: |
             ${{ env.REGISTRY_URL }}/${{ env.REGISTRY_USERNAME }}/${{ env.IMAGE_NAME }}
-          flavor: |
-            latest=false
           labels: |
             org.opencontainers.image.description=${{ github.event.repository.description }}
           tags: |
-            type=semver,pattern={{version}}
-            type=sha,prefix=sha256-
-            type=raw,value=${{ matrix.major_version }},enable=${{ github.event_name != 'pull_request' && matrix.major_version != '' }}
-            type=raw,value=latest,enable=${{ github.event_name != 'pull_request' && matrix.is_latest == true }}
-            type=raw,value=stable,enable=${{ github.event_name != 'pull_request' && matrix.is_stable == true }}
-            type=ref,suffix=-${{ matrix.major_version }},event=pr,enable=${{ github.event_name == 'pull_request' }}
-            type=schedule,pattern={{date 'YYYYMMDD'}},enable=${{ github.event_name != 'pull_request' && matrix.is_stable == true }}
-            type=schedule,prefix=${{ matrix.major_version }}-,pattern={{date 'YYYYMMDD'}},enable=${{ github.event_name == 'schedule' }}
+            type=sha,format=long,prefix=sha256-
 
       - name: Set up Docker Buildx
         id: buildx
@@ -85,7 +76,7 @@ jobs:
 
       - name: Build and push image
         id: build-and-push
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v6
         env:
           ACTIONS_RUNTIME_TOKEN: ''
           SOURCE_DATE_EPOCH: ${{ env.TIMESTAMP }}
@@ -94,13 +85,28 @@ jobs:
             ./Containerfile
           build-args: |
             FEDORA_MAJOR_VERSION=${{ matrix.major_version }}
-          platforms: linux/amd64,linux/arm64
+          platforms: ${{ matrix.platform }}
           provenance: false
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+          outputs: type=image,name=${{ env.REGISTRY_URL }}/${{ env.REGISTRY_USERNAME }}/${{ env.IMAGE_NAME }},name-canonical=true
           cache-from: type=gha
           cache-to: type=gha,mode=max
+
+      - name: Export digest
+        run: |
+          mkdir -p /tmp/digests
+          digest="${{ steps.build-and-push.outputs.digest }}"
+          touch "/tmp/digests/${digest#sha256:}"
+
+      - name: Upload digest
+        uses: actions/upload-artifact@v4
+        with:
+          name: digests-${{ env.PLATFORM_PAIR }}
+          path: /tmp/digests/*
+          if-no-files-found: error
+          retention-days: 1
 
       - name: Install Cosign
         uses: sigstore/cosign-installer@v3.1.2
@@ -116,3 +122,65 @@ jobs:
       - name: Echo outputs
         run: |
           echo "${{ toJSON(steps.build-and-push.outputs) }}"
+
+  merge:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+      id-token: write
+    if: ${{ always() }}
+    needs:
+      - build
+    strategy:
+      fail-fast: false
+      matrix:
+        major_version: [39, 40]
+        include:
+          - major_version: 40
+            is_latest: true
+            is_stable: true
+
+    steps:
+      - name: Download digests
+        uses: actions/download-artifact@v4
+        with:
+          path: /tmp/digests
+          pattern: digests-${{ matrix.major_version }}*
+          merge-multiple: true
+
+      - name: Log into registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY_URL }}
+          username: ${{ env.REGISTRY_USERNAME }}
+          password: ${{ env.REGISTRY_PASSWORD }}
+
+      - name: Extract Docker metadata
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: |
+            ${{ env.REGISTRY_URL }}/${{ env.REGISTRY_USERNAME }}/${{ env.IMAGE_NAME }}
+          labels: |
+            org.opencontainers.image.description=${{ github.event.repository.description }}
+          tags: |
+            type=raw,value=${{ matrix.major_version }},enable=${{ github.event_name != 'pull_request' && matrix.major_version != '' }}
+            type=ref,suffix=-${{ matrix.major_version }},event=pr,enable=${{ github.event_name == 'pull_request' }}
+            type=raw,value=latest,enable=${{ github.event_name != 'pull_request' && matrix.is_latest == true }}
+            type=raw,value=stable,enable=${{ github.event_name != 'pull_request' && matrix.is_stable == true }}
+            type=schedule,pattern={{date 'YYYYMMDD'}},enable=${{ github.event_name != 'pull_request' && matrix.is_stable == true }}
+            type=schedule,prefix=${{ matrix.major_version }}-,pattern={{date 'YYYYMMDD'}},enable=${{ github.event_name == 'schedule' }}
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Create manifest list and push
+        working-directory: /tmp/digests
+        run: |
+          docker buildx imagetools create $(jq -cr '.tags | map("-t " + .) | join(" ")' <<< "$DOCKER_METADATA_OUTPUT_JSON") \
+            $(printf '${{ env.REGISTRY_URL }}/${{ env.REGISTRY_USERNAME }}/${{ env.IMAGE_NAME }}@sha256:%s ' *)
+
+      - name: Inspect image
+        run: |
+          docker buildx imagetools inspect ${{ env.REGISTRY_URL }}/${{ env.REGISTRY_USERNAME }}/${{ env.IMAGE_NAME }}:${{ steps.meta.outputs.version }}
