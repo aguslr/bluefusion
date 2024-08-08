@@ -65,10 +65,6 @@ jobs:
         with:
           images: |
             ${{ env.REGISTRY_URL }}/${{ env.REGISTRY_USERNAME }}/${{ env.IMAGE_NAME }}
-          labels: |
-            org.opencontainers.image.description=${{ github.event.repository.description }}
-          tags: |
-            type=sha,format=long,prefix=sha256-
 
       - name: Set up Docker Buildx
         id: buildx
@@ -88,9 +84,8 @@ jobs:
           platforms: ${{ matrix.platform }}
           provenance: false
           push: true
-          tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-          outputs: type=image,name=${{ env.REGISTRY_URL }}/${{ env.REGISTRY_USERNAME }}/${{ env.IMAGE_NAME }},name-canonical=true
+          outputs: type=image,name=${{ env.REGISTRY_URL }}/${{ env.REGISTRY_USERNAME }}/${{ env.IMAGE_NAME }},push-by-digest=true,name-canonical=true
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
