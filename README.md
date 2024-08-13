@@ -43,7 +43,6 @@ Features
 - Install [Nix][12].
 - Replace [Toolbox][2] with [Distrobox][3].
 - Add RPM Fusion repositories and several multimedia packages.
-- Set automatic checking of updates for the system.
 - Add keyboard shortcuts:
   + Open Terminal into the system's shell: `<Control><Alt>t`
   + Open Terminal into the default Distrobox container: `<Super>Return`
