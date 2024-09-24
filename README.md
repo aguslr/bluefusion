@@ -47,10 +47,13 @@ Features
   + Open Terminal into the system's shell: `<Control><Alt>t`
   + Open Terminal into the default Distrobox container: `<Super>Return`
 
-To disable **Homebrew** and **Nix**, mask the mounts by running:
+To enable **Homebrew** just run:
 
-    sudo systemctl mask nix.mount
-    sudo systemctl mask var-home-linuxbrew.mount
+    sudo systemctl enable --now var-home-linuxbrew.mount
+
+And to enable **Nix** run:
+
+    sudo systemctl enable --now nix.mount
 
 Verification
 ------------

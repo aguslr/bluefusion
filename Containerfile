@@ -40,9 +40,6 @@ COPY rootfs/ /
 RUN <<-'EOT' sh
 	set -u
 
-	systemctl enable nix.mount
-	systemctl enable var-home-linuxbrew.mount
-
 	rpm-ostree install gcc make
 	rpm-ostree override remove toolbox --install distrobox
 
