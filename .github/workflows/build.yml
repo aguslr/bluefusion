@@ -35,7 +35,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        major_version: [39, 40]
+        major_version: [39, 40, 41]
         platform:
           - linux/amd64
           - linux/arm64
@@ -119,7 +119,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        major_version: [39, 40]
+        major_version: [39, 40, 41]
         include:
           - major_version: 40
             is_latest: true
