@@ -40,7 +40,7 @@ COPY rootfs/ /
 RUN <<-'EOT' sh
 	set -u
 
-	rpm-ostree install gcc make
+	rpm-ostree install gcc make libxcrypt-compat
 	rpm-ostree override remove toolbox --install distrobox
 
 	rpm-ostree install \
