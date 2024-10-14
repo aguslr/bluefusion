@@ -8,10 +8,12 @@ RUN <<-EOT sh
 
 	touch /.dockerenv
 
+	# Install packages
+	dnf install -y git xz --setopt=install_weak_deps=False
+
 	# Instal Homebrew
 	case "$(rpm -E %{_arch})" in
 		x86_64)
-			dnf install -y git --setopt=install_weak_deps=False
 			curl -fLs \
 				https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh | bash -s
 			/home/linuxbrew/.linuxbrew/bin/brew update
@@ -21,13 +23,19 @@ RUN <<-EOT sh
 			;;
 	esac
 
+	# Add user for nix
+	useradd nix
+	mkdir -m 0755 /nix && chown nix /nix
+EOT
+
+USER nix
+RUN <<-EOT sh
+	set -u
+
 	# Install Nix
-	dnf install -y xz --setopt=install_weak_deps=False
-	useradd nix && mkdir -m 0755 /nix && chown nix /nix
-	sudo -u nix -- bash -c \
-		'curl -fLs https://nixos.org/nix/install | sh -s -- --no-daemon --yes'
+	curl -fLs https://nixos.org/nix/install | sh -s -- --no-daemon --yes
 	cp -pr \
-		/home/nix/.local/state/nix/profiles/profile-1-link \
+		~/.local/state/nix/profiles/profile-1-link \
 		/nix/var/nix/profiles/default
 EOT
 
