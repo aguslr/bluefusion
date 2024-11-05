@@ -121,7 +121,7 @@ jobs:
       matrix:
         major_version: [39, 40, 41]
         include:
-          - major_version: 40
+          - major_version: 41
             is_latest: true
             is_stable: true
 
