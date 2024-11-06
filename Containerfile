@@ -4,7 +4,7 @@ FROM quay.io/fedora/fedora:${FEDORA_MAJOR_VERSION} AS builder
 
 WORKDIR /tmp
 RUN <<-EOT sh
-	set -u
+	set -eu
 
 	touch /.dockerenv
 
@@ -30,7 +30,7 @@ EOT
 
 USER nix
 RUN <<-EOT sh
-	set -u
+	set -eu
 
 	# Install Nix
 	curl -fLs https://nixos.org/nix/install | sh -s -- --no-daemon --yes
@@ -46,7 +46,7 @@ COPY --from=builder --chown=1000:1000 /nix /usr/share/nix
 COPY rootfs/ /
 
 RUN <<-'EOT' sh
-	set -u
+	set -eu
 
 	rpm-ostree install gcc make libxcrypt-compat
 	rpm-ostree override remove toolbox --install distrobox
