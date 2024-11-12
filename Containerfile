@@ -80,10 +80,12 @@ RUN <<-'EOT' sh
 		--install=mesa-va-drivers-freeworld \
 		--install=mesa-vdpau-drivers-freeworld
 
-	if [ "$(rpm -E %{_arch})" = 'x86_64' ]; then
-		rpm-ostree install steam-devices
-		rpm-ostree install intel-media-driver libva-intel-driver
-	fi
+	case "$(rpm -E %{_arch})" in
+		x86_64)
+			rpm-ostree install steam-devices
+			rpm-ostree install intel-media-driver libva-intel-driver
+			;;
+	esac
 	rpm-ostree install libva-nvidia-driver
 
 	rpm-ostree cleanup -m && ostree container commit
