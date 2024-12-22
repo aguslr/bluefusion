@@ -39,9 +39,9 @@ Features
 --------
 
 - Start with a custom Fedora Silverblue image.
+- Install [Distrobox][3].
 - Install [Homebrew][9] on `x86_64`.
 - Install [Nix][12].
-- Replace [Toolbox][2] with [Distrobox][3].
 - Add RPM Fusion repositories and several multimedia packages.
 
 To enable **Homebrew** just run:

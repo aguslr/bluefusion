@@ -49,7 +49,7 @@ RUN <<-'EOT' sh
 	set -eu
 
 	rpm-ostree install gcc make libxcrypt-compat
-	rpm-ostree override remove toolbox --install distrobox
+	rpm-ostree install distrobox
 
 	rpm-ostree install \
 		https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm \
