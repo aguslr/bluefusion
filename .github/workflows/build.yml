@@ -172,7 +172,7 @@ jobs:
 
       - name: Sign container image
         run: |
-          cosign sign -y --key env://COSIGN_PRIVATE_KEY ${TAGS}
+          cosign sign -y --recursive --key env://COSIGN_PRIVATE_KEY ${TAGS}
         env:
           TAGS: ${{ steps.meta.outputs.tags }}
           COSIGN_PRIVATE_KEY: ${{ secrets.COSIGN_KEY }}
