@@ -58,7 +58,7 @@ RUN <<-'EOT' sh
 		--uninstall rpmfusion-free-release \
 		--uninstall rpmfusion-nonfree-release
 
-	rpm-ostree override remove \
+	(rpm-ostree override remove \
 		ffmpeg-free \
 		libavcodec-free \
 		libavdevice-free \
@@ -73,12 +73,12 @@ RUN <<-'EOT' sh
 		--install=gstreamer1-plugins-bad-free-extras \
 		--install=gstreamer1-plugins-bad-freeworld \
 		--install=gstreamer1-plugins-ugly \
-		--install=gstreamer1-vaapi
+		--install=gstreamer1-vaapi) || true
 
-	rpm-ostree override remove \
+	(rpm-ostree override remove \
 		mesa-va-drivers \
 		--install=mesa-va-drivers-freeworld \
-		--install=mesa-vdpau-drivers-freeworld
+		--install=mesa-vdpau-drivers-freeworld) || true
 
 	case "$(rpm -E %{_arch})" in
 		x86_64)
