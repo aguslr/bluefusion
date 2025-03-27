@@ -37,7 +37,6 @@ jobs:
         major_version: [40, 41]
         platform:
           - linux/amd64
-          - linux/arm64
 
     steps:
       - name: Prepare
